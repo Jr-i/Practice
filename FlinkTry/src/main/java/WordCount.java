@@ -10,6 +10,8 @@ public class WordCount {
 
         // 1. 创建流式执行环境
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
+        // 测试用：有WebUI的本地环境
+//        StreamExecutionEnvironment env = StreamExecutionEnvironment.createLocalEnvironmentWithWebUI(new Configuration());
 
         // 2. 读取文件
         DataStreamSource<String> lineStream = env.socketTextStream("hadoop102", 7777);
