@@ -38,16 +38,22 @@
             <version>${flink.version}</version>
             <scope>provided</scope>
         </dependency>
-        <!-- 文件连接器 -->
+        <!-- 文件 连接器 -->
         <dependency>
             <groupId>org.apache.flink</groupId>
             <artifactId>flink-connector-files</artifactId>
             <version>${flink.version}</version>
         </dependency>
-        <!-- Kafka连接器 -->
+        <!-- Kafka 连接器 -->
         <dependency>
             <groupId>org.apache.flink</groupId>
             <artifactId>flink-connector-kafka</artifactId>
+            <version>${flink.version}</version>
+        </dependency>
+        <!-- DataGen 连接器 -->
+        <dependency>
+            <groupId>org.apache.flink</groupId>
+            <artifactId>flink-connector-datagen</artifactId>
             <version>${flink.version}</version>
         </dependency>
 
