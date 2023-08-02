@@ -1,4 +1,4 @@
-package window;
+package partition;
 
 import org.apache.flink.api.java.tuple.Tuple2;
 import org.apache.flink.api.java.tuple.Tuple3;

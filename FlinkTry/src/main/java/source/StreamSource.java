@@ -35,7 +35,7 @@ public class StreamSource {
 
     public static void kafkaSource(StreamExecutionEnvironment env) {
         KafkaSource<String> source = KafkaSource.<String>builder()
-                .setBootstrapServers("hadoop103:9092")
+                .setBootstrapServers("hadoop102:9092")
                 .setTopics("first")
                 .setStartingOffsets(OffsetsInitializer.earliest())
                 .setValueOnlyDeserializer(new SimpleStringSchema())

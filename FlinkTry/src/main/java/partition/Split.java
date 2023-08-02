@@ -1,4 +1,4 @@
-package window;
+package partition;
 
 import bean.WaterSensor;
 import org.apache.flink.api.common.typeinfo.Types;

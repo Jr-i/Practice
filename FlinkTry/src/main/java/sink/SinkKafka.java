@@ -34,20 +34,20 @@ public class SinkKafka {
          */
         KafkaSink<String> kafkaSink = KafkaSink.<String>builder()
                 // 指定 kafka 的地址和端口
-                .setBootstrapServers("192.168.2.102:9092")
+                .setBootstrapServers("hadoop102:9092,hadoop103:9092,hadoop104:9092")
                 // 指定序列化器：指定Topic名称、具体的序列化
                 .setRecordSerializer(
                         KafkaRecordSerializationSchema.<String>builder()
-                                .setTopic("DataGen")
+                                .setTopic("first")
                                 .setValueSerializationSchema(new SimpleStringSchema())
                                 .build()
                 )
                 // 写到kafka的一致性级别： 精准一次、至少一次
                 .setDeliveryGuarantee(DeliveryGuarantee.EXACTLY_ONCE)
                 // 如果是精准一次，必须设置 事务的前缀
-                .setTransactionalIdPrefix("Generator-")
+                .setTransactionalIdPrefix("Gen-")
                 // 如果是精准一次，必须设置 事务超时时间: 大于checkpoint间隔，小于 max 15分钟
-                .setProperty(ProducerConfig.TRANSACTION_TIMEOUT_CONFIG, 10*60*1000+"")
+                .setProperty(ProducerConfig.TRANSACTION_TIMEOUT_CONFIG, 10 * 60 * 1000 + "")
                 .build();
 
         dataGen.sinkTo(kafkaSink);
