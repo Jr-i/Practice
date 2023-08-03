@@ -1,5 +1,6 @@
 package source;
 
+import bean.WaterSensor;
 import org.apache.flink.api.common.eventtime.WatermarkStrategy;
 import org.apache.flink.api.common.serialization.SimpleStringSchema;
 import org.apache.flink.api.common.typeinfo.Types;
@@ -48,7 +49,6 @@ public class StreamSource {
 
     /**
      * 数据生成
-     *
      * @param numberOfRecords  数据生成总条数
      * @param recordsPerSecond 每秒生成数据条数
      * @return 流式数据源
@@ -64,5 +64,15 @@ public class StreamSource {
                 Types.STRING);
     }
 
+    public static DataGeneratorSource<WaterSensor> WaterSensorSource(long numberOfRecords, double recordsPerSecond) {
 
+        GeneratorFunction<Long, WaterSensor> generatorFunction = i ->
+                new WaterSensor("sensor_" + i, i * i, Math.toIntExact(i));
+
+        return new DataGeneratorSource<>(
+                generatorFunction,
+                numberOfRecords,
+                RateLimiterStrategy.perSecond(recordsPerSecond),
+                Types.POJO(WaterSensor.class));
+    }
 }

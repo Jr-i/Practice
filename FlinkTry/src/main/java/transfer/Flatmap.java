@@ -12,11 +12,9 @@ public class Flatmap {
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
 
         DataStreamSource<WaterSensor> stream = env.fromElements(
-
                 new WaterSensor("sensor_1", 1L, 1),
                 new WaterSensor("sensor_2", 2L, 2),
                 new WaterSensor("sensor_3", 3L, 3)
-
         );
 
         // 方法一 lambda表达式
