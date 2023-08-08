@@ -67,7 +67,7 @@ public class StreamSource {
     public static DataGeneratorSource<WaterSensor> WaterSensorSource(long numberOfRecords, double recordsPerSecond) {
 
         GeneratorFunction<Long, WaterSensor> generatorFunction = i ->
-                new WaterSensor("sensor_" + i, i * i, Math.toIntExact(i));
+                new WaterSensor("sensor_" + i, i , (int) (i * i));
 
         return new DataGeneratorSource<>(
                 generatorFunction,
