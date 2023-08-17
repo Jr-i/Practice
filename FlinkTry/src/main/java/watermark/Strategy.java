@@ -3,6 +3,7 @@ package watermark;
 import bean.WaterSensor;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.flink.api.common.eventtime.WatermarkStrategy;
+import org.apache.flink.api.common.typeinfo.Types;
 import org.apache.flink.connector.datagen.source.DataGeneratorSource;
 import org.apache.flink.streaming.api.datastream.DataStreamSource;
 import org.apache.flink.streaming.api.datastream.SingleOutputStreamOperator;
@@ -12,6 +13,7 @@ import org.apache.flink.streaming.api.windowing.assigners.TumblingEventTimeWindo
 import org.apache.flink.streaming.api.windowing.time.Time;
 import org.apache.flink.streaming.api.windowing.windows.TimeWindow;
 import org.apache.flink.util.Collector;
+import org.apache.flink.util.OutputTag;
 import source.StreamSource;
 
 import java.time.Duration;
@@ -27,11 +29,28 @@ public class Strategy {
         DataStreamSource<WaterSensor> streamSource =
                 env.fromSource(generatorSource, WatermarkStrategy.noWatermarks(), "WaterSensor");
 
-        SingleOutputStreamOperator<String> process = streamSource
-                // TODO 2. 指定 watermark策略
+        SingleOutputStreamOperator<WaterSensor> streamOperator = streamSource.map(e -> {
+            if (e.getTs() % 10 == 6) {
+                // 触发窗口计算
+                e.setTs(e.getTs() + 7);
+            } else if (e.getTs() % 10 == 8) {
+                // 触发窗口关闭
+                e.setTs(e.getTs() + 8);
+            }
+            return e;
+        });
+
+        OutputTag<WaterSensor> lateWS = new OutputTag<>("late-data", Types.POJO(WaterSensor.class));
+
+        SingleOutputStreamOperator<String> process = streamOperator
+                // 指定 watermark策略
                 .assignTimestampsAndWatermarks(BoundedOutOfOrder())
-                // TODO 3.使用 事件时间语义 的窗口
+                // 使用 事件时间语义 的窗口
                 .windowAll(TumblingEventTimeWindows.of(Time.seconds(10)))
+                // 允许迟到3秒，迟到数据会再次触发窗口计算，3秒后窗口正式关闭
+                .allowedLateness(Time.seconds(3))
+                // 关窗后的迟到数据，放入侧输出流
+                .sideOutputLateData(lateWS)
                 .process(
                         new ProcessAllWindowFunction<WaterSensor, String, TimeWindow>() {
                             @Override
@@ -47,7 +66,10 @@ public class Strategy {
                         }
                 );
 
-        process.print();
+        // 输出主流数据
+        process.print("main");
+        //从主流中，根据标签获取侧输出流
+        process.getSideOutput(lateWS).print("late");
 
         env.execute();
     }
