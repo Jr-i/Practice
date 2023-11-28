@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>水果账单</title>
+    <link rel="stylesheet" href="css/style1.css">
+    <script src="JavaScript/02.js"></script>
+</head>
+
+<body>
+<div id="container">
+    <div id="table_div">
+        <table id="table">
+            <tr>
+                <th>名称</th>
+                <th>单价</th>
+                <th>数量</th>
+                <th>小计</th>
+                <th>操作</th>
+            </tr>
+            <tr>
+                <td>苹果</td>
+                <td>3</td>
+                <td>3</td>
+                <td>9</td>
+                <td><img src="picture/delete.png" class="deleteImg"/></td>
+            </tr>
+            <tr>
+                <td>西瓜</td>
+                <td>4</td>
+                <td>1</td>
+                <td>4</td>
+                <td><img src="picture/delete.png" class="deleteImg"/></td>
+            </tr>
+            <tr>
+                <td>总价</td>
+                <td colspan="4">13</td>
+            </tr>
+        </table>
+        <br>
+        <hr>
+        <br>
+        <div>
+            <form id="addForm">
+                名称：<input type='text' value="菠萝"/><br>
+                单价：<input type='text' value="7"/><br>
+                数量：<input type='text' value="8"/><br>
+                <input type='submit' value="添加" class="button" id="addButton"/>
+                <input type='reset' value="重置" class="button" id="del"/>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+
+</html>
