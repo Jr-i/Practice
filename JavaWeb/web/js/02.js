@@ -89,7 +89,7 @@ function edit() {
     if (td.firstChild.nodeType === 3) {
         const oldValue = td.innerText;
         td.innerHTML = "<input type='text' size='2'/>";
-        let input = td.firstChild;
+        const input = td.firstChild;
         input.value = oldValue;
         input.select();
         // 失去焦点，更新数据
