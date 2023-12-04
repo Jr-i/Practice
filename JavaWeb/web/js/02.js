@@ -22,18 +22,26 @@ function trEvent(tr) {
         td_price.onclick = edit;
     }
 
+    const td_amount = tr.cells[2];
+    if (td_amount.tagName === "TD") {
+        td_amount.onmouseover = showHand;
+        td_amount.onclick = edit;
+    }
+
     const deleteImg = tr.cells[4].firstChild;
     deleteImg.onclick = deleteLine;
 }
 
 
 function addLine() {
+/*
     const table_2 = document.getElementById("newTable");
     const lines = table_2.rows;
 
     const name = lines[0].cells[1].firstChild.value;
     const price = lines[1].cells[1].firstChild.value;
     const count = lines[2].cells[1].firstChild.value;
+*/
 
     const table_1 = document.getElementById("table");
 
@@ -42,7 +50,7 @@ function addLine() {
     newTableRow.insertCell(1).innerText = price;
     newTableRow.insertCell(2).innerText = count;
     newTableRow.insertCell(3).innerText = parseInt(price) * parseInt(count);
-    newTableRow.insertCell(4).innerHTML = '<img src="picture/delete.png" class="deleteImg" />';
+    newTableRow.insertCell(4).innerHTML = '<img src="img/delete.png" class="deleteImg" />';
 
     updateSumTotal();
 
@@ -51,7 +59,8 @@ function addLine() {
 }
 
 function showBGColor() {
-    const tr = EventTarget.parentElement;
+    const td = event.target;
+    const tr = td.parentElement;
     tr.style.backgroundColor = "gray";
     const tds = tr.cells;
     for (let i = 0; i < tds.length; i++) {
@@ -60,7 +69,8 @@ function showBGColor() {
 }
 
 function clearBGColor() {
-    const tr = EventTarget.parentElement;
+    const td = event.target;
+    const tr = td.parentElement;
     tr.style.backgroundColor = "transparent";
     const tds = tr.cells;
     for (let i = 0; i < tds.length; i++) {
@@ -69,16 +79,17 @@ function clearBGColor() {
 }
 
 function showHand() {
-    EventTarget.style.cursor = "hand";
+    const td = event.target;
+    td.style.cursor = "pointer";
 }
 
 function edit() {
-    const td = EventTarget;
+    const td = event.target;
     // nodeType:1——标签,2——属性,3——文本
     if (td.firstChild.nodeType === 3) {
         const oldValue = td.innerText;
         td.innerHTML = "<input type='text' size='2'/>";
-        const input = td.firstChild;
+        let input = td.firstChild;
         input.value = oldValue;
         input.select();
         // 失去焦点，更新数据
@@ -88,23 +99,24 @@ function edit() {
 }
 
 function checkInput() {
-    const input = Event.keyCode;
+    const input = event.keyCode;
 
     // 非数字、删除键
     if (!((input >= 48 && input <= 57) || input === 8)) {
         // 输入不生效
-        input.preventDefault();
+        event.preventDefault();
+
     }
 
     // 回车
     if (input === 13) {
         // 触发失去焦点事件
-        EventTarget.blur();
+        event.target.blur();
     }
 }
 
 function update() {
-    const input = EventTarget;
+    const input = event.target;
     const newPrice = input.value;
     const td = input.parentElement;
     td.innerText = newPrice;
@@ -141,7 +153,8 @@ function deleteLine() {
     // confirm 有确认和取消两个选项
     if (window.confirm("是否删除当前记录？")) {
         const table_1 = document.getElementById("table");
-        const tr = EventTarget.parentElement.parentElement;
+        const img = event.target;
+        const tr = img.parentElement.parentElement;
         table_1.deleteRow(tr.rowIndex);
 
         updateSumTotal();
