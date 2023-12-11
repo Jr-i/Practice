@@ -12,6 +12,10 @@ table {
     font-family: 方正魏碑;
 }
 
+.wideTable {
+    width: 80%;
+}
+
 td {
     border: 1px solid powderblue;
     text-align: center;
@@ -26,6 +30,13 @@ td {
     border: 2px solid powderblue;
     border-radius: 4px;
     width: 60px;
+    background-color: antiquewhite;
+}
+
+.wideBtn {
+    border: 2px solid powderblue;
+    border-radius: 4px;
+    width: 80px;
     background-color: antiquewhite;
 }
 
