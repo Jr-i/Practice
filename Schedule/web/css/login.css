@@ -1,0 +1,35 @@
+.ht {
+    text-align: center;
+    color: cadetblue;
+    font-family: 幼圆;
+}
+
+table {
+    width: 500px;
+    border: 5px solid cadetblue;
+    margin: 0 auto;
+    border-radius: 5px;
+    font-family: 方正魏碑;
+}
+
+td {
+    border: 1px solid powderblue;
+    text-align: center;
+}
+
+.input {
+    border: 0;
+    width: 50%;
+}
+
+.btn {
+    border: 2px solid powderblue;
+    border-radius: 4px;
+    width: 60px;
+    background-color: antiquewhite;
+}
+
+#usernameMsg, #userPwdMsg, #reUserPwdMsg {
+    color: darkred;
+    font-size: small;
+}
