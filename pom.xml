@@ -11,7 +11,7 @@
     <modules>
         <module>FlinkTry</module>
         <module>SpringTry</module>
-        <module>JavaWeb</module>
+        <module>Schedule</module>
     </modules>
 
     <properties>
