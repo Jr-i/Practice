@@ -11,7 +11,7 @@ import java.io.Reader;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-public class MybatisUtil {
+public final class MybatisUtil {
     public static SqlSessionFactory getSqlSessionFactory() {
         try {
             InputStream is = Resources.getResourceAsStream("mybatis-config.xml");
