@@ -28,7 +28,7 @@
     </typeAliases>
 
     <!--设置连接数据库的环境-->
-    <environments default="work">
+    <environments default="home">
         <environment id="work">
             <transactionManager type="JDBC"/>
             <dataSource type="POOLED">

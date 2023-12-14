@@ -19,7 +19,7 @@ public class ScheduleFilter implements Filter {
         if (username != null) {
             filterChain.doFilter(servletRequest, servletResponse);
         } else {
-            response.sendRedirect("/login.html");
+            response.sendRedirect("/index.html");
         }
 
     }
