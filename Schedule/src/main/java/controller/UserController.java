@@ -45,4 +45,12 @@ public class UserController extends BaseController {
             resp.sendRedirect("/loginUserPwdError.html");
         }
     }
+
+    protected void checkUsernameUsed(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        List<SysUser> users =
+                sysUserService.findByUsername(req.getParameter("username"));
+        // 放入String之外的数据类型，使用xmlHttpRequest.responseText解析时会出现乱码
+        String size = String.valueOf(users.size());
+        resp.getWriter().write(size);
+    }
 }

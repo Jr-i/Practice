@@ -12,6 +12,28 @@ function checkUsername() {
     return true
 }
 
+function checkRegistUsername() {
+    if (checkUsername() === false) {
+        return false
+    }
+
+    const xmlHttpRequest = new XMLHttpRequest();
+    xmlHttpRequest.onreadystatechange = function () {
+        if (xmlHttpRequest.readyState === 4 && xmlHttpRequest.status === 200) {
+            if (xmlHttpRequest.responseText !== "0") {
+                const usernameMsgSpan = document.getElementById("usernameMsg");
+                usernameMsgSpan.innerText = "已占用";
+            }
+        }
+    }
+
+    // 设置请求方式和请求的资源路径
+    const username = document.getElementById("usernameInput").value;
+    xmlHttpRequest.open("GET", "/user/checkUsernameUsed?username=" + username);
+    // 发送请求
+    xmlHttpRequest.send();
+}
+
 // 校验密码的方法
 function checkUserPwd() {
     // 定义正则
