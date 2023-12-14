@@ -36,7 +36,9 @@ public class UserController extends BaseController {
             // 跳转到用户名有误提示页
             resp.sendRedirect("/loginUsernameError.html");
         } else if (users.get(0).getUserPwd().equals(encrypt(req.getParameter("userPwd")))) {
-            //4 跳转到首页
+            // 在 session 中放入用户名
+            req.getSession().setAttribute("username", users.get(0).getUsername());
+            // 跳转到日程展示界面
             resp.sendRedirect("/showSchedule.html");
         } else {
             // 跳转到密码有误提示页
