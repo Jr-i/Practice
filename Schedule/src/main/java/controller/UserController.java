@@ -1,5 +1,6 @@
 package controller;
 
+import common.Result;
 import pojo.SysUser;
 import service.SysUserServiceImpl;
 
@@ -10,7 +11,10 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
+import static common.ResultCodeEnum.SUCCESS;
+import static common.ResultCodeEnum.USERNAME_USED;
 import static util.MD5Util.encrypt;
+import static util.WebUtil.writeJson;
 
 @WebServlet("/user/*")
 public class UserController extends BaseController {
@@ -50,7 +54,11 @@ public class UserController extends BaseController {
         List<SysUser> users =
                 sysUserService.findByUsername(req.getParameter("username"));
         // 放入String之外的数据类型，使用xmlHttpRequest.responseText解析时会出现乱码
-        String size = String.valueOf(users.size());
-        resp.getWriter().write(size);
+        Result<Object> result = Result.build(SUCCESS);
+        if (users.size() != 0) {
+            result = Result.build(USERNAME_USED);
+        }
+
+        writeJson(resp, result);
     }
 }

@@ -3,14 +3,14 @@ package service;
 import mapper.SysUserMapper;
 import pojo.SysUser;
 import pojo.SysUserExample;
-import util.MybatisUtil;
 
 import java.util.List;
 
 import static util.MD5Util.encrypt;
+import static util.MybatisUtil.getSqlSessionFactory;
 
 public class SysUserServiceImpl implements SysUserService {
-    private final static SysUserMapper userMapper = MybatisUtil.getSqlSessionFactory().openSession(true)
+    private final static SysUserMapper userMapper = getSqlSessionFactory().openSession(true)
             .getMapper(SysUserMapper.class);
 
     @Override
