@@ -20,9 +20,12 @@ function checkRegistUsername() {
     const xmlHttpRequest = new XMLHttpRequest();
     xmlHttpRequest.onreadystatechange = function () {
         if (xmlHttpRequest.readyState === 4 && xmlHttpRequest.status === 200) {
-            if (xmlHttpRequest.responseText !== "0") {
+            // console.log(xmlHttpRequest.responseText)
+            const response = JSON.parse(xmlHttpRequest.responseText);
+            if (response.code === 505) {
                 const usernameMsgSpan = document.getElementById("usernameMsg");
-                usernameMsgSpan.innerText = "已占用";
+                usernameMsgSpan.innerText = "已占用"
+                return false
             }
         }
     }

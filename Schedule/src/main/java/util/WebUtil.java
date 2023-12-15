@@ -9,7 +9,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 
-public class WebUtil {
+public final class WebUtil {
     private static final ObjectMapper objectMapper;
 
     // 初始化objectMapper
@@ -20,7 +20,7 @@ public class WebUtil {
     }
 
     // 将Result对象转换成JSON串并放入响应对象
-    public static void writeJson(HttpServletResponse response, Result result) {
+    public static <T> void writeJson(HttpServletResponse response, Result<T> result) {
         response.setContentType("application/json;charset=UTF-8");
         try {
             String json = objectMapper.writeValueAsString(result);
@@ -37,7 +37,7 @@ public class WebUtil {
         try {
             reader = request.getReader();
             StringBuffer buffer = new StringBuffer();
-            String line = null;
+            String line;
             while ((line = reader.readLine()) != null) {
                 buffer.append(line);
             }
