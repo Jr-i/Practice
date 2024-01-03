@@ -11,9 +11,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
-import static common.ResultCodeEnum.SUCCESS;
-import static common.ResultCodeEnum.USERNAME_USED;
+import static common.ResultCodeEnum.*;
 import static util.MD5Util.encrypt;
+import static util.WebUtil.readJson;
 import static util.WebUtil.writeJson;
 
 @WebServlet("/user/*")
@@ -21,33 +21,34 @@ public class UserController extends BaseController {
     private final static SysUserServiceImpl sysUserService = new SysUserServiceImpl();
 
     protected void regist(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        // 1 将参数放入一个SysUser对象中,在调用regist方法时传入
-        SysUser sysUser = new SysUser();
-        sysUser.setUsername(req.getParameter("username"));
-        sysUser.setUserPwd(req.getParameter("userPwd"));
-        // 2 调用服务层方法,完成注册功能。根据注册结果(成功  失败) 做页面跳转
+        // 接收要注册的用户信息
+        SysUser sysUser = readJson(req, SysUser.class);
+        // 调用服务层方法,将用户注册进入数据库
+        Result<Object> result = Result.build(SUCCESS);
         if (sysUserService.insert(sysUser) == 0) {
-            resp.sendRedirect("/registFail.html");
-        } else {
-            resp.sendRedirect("/registSuccess.html");
+            result = Result.build(USERNAME_USED);
         }
-
+        writeJson(resp, result);
     }
 
     protected void login(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        List<SysUser> users = sysUserService.findByUsername(req.getParameter("username"));
+        // 获取要登录的用户名密码
+        SysUser inputUser = readJson(req, SysUser.class);
+        // 调用服务层方法,根据用户名查询数据库中是否有一个用户
+        List<SysUser> users = sysUserService.findByUsername(inputUser.getUsername());
+        Result<Object> result;
         if (users.size() == 0) {
-            // 跳转到用户名有误提示页
-            resp.sendRedirect("/loginUsernameError.html");
-        } else if (users.get(0).getUserPwd().equals(encrypt(req.getParameter("userPwd")))) {
-            // 在 session 中放入用户名
-            req.getSession().setAttribute("username", users.get(0).getUsername());
-            // 跳转到日程展示界面
-            resp.sendRedirect("/showSchedule.html");
+            // 没有根据用户名找到用户,说明用户名有误
+            result = Result.build(USERNAME_ERROR);
+        } else if (users.get(0).getUserPwd().equals(encrypt(inputUser.getUserPwd()))) {
+            // 登录成功
+            result = Result.build(SUCCESS);
         } else {
-            // 跳转到密码有误提示页
-            resp.sendRedirect("/loginUserPwdError.html");
+            // 用户密码有误
+            result = Result.build(PASSWORD_ERROR);
         }
+
+        writeJson(resp, result);
     }
 
     protected void checkUsernameUsed(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
