@@ -41,8 +41,11 @@ public class UserController extends BaseController {
             // 没有根据用户名找到用户,说明用户名有误
             result = Result.build(USERNAME_ERROR);
         } else if (users.get(0).getUserPwd().equals(encrypt(inputUser.getUserPwd()))) {
+            SysUser sysUser = new SysUser();
+            sysUser.setUid(users.get(0).getUid());
+            sysUser.setUsername(users.get(0).getUsername());
             // 登录成功
-            result = Result.build(SUCCESS);
+            result = Result.build(SUCCESS, sysUser);
         } else {
             // 用户密码有误
             result = Result.build(PASSWORD_ERROR);
